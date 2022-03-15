@@ -22,3 +22,9 @@ $('form[name=signup_form]').submit(function(e) {
         }
     })
 })
+
+
+$('.movie-card').on('click', function() {
+    let datamid = $(this).data('mid');
+    window.location.href='movie/' + datamid
+})

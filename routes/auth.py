@@ -9,11 +9,11 @@ from flask_login import login_user, login_required, logout_user
 auth_bp = Blueprint('auth', __name__, template_folder='templates')
 
 
-@auth_bp.get('/user-login')
+@auth_bp.get('/login')
 def login():
     return render_template('login.html')
 
-@auth_bp.post('/user-login')
+@auth_bp.post('/login')
 def user_login():
     username = request.form.get('username')
     password = request.form.get('password')
@@ -54,5 +54,5 @@ def post_signup():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))
     

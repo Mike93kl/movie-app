@@ -52,3 +52,18 @@ class BaseModel():
         model = cls(**model)
         model.serialize_id()
         return model
+
+    @classmethod
+    def find_one(cls, query_dict):
+        print(query_dict)
+        model = db[cls.get_col()].find_one(query_dict)
+        print(model)
+        if model is None:
+            return None
+        model = cls(**model)
+        model.serialize_id()
+        return model
+
+    @classmethod
+    def delete_one(cls, query_dict):
+        db[cls.get_col()].delete_one(query_dict)
