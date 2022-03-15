@@ -5,8 +5,13 @@ name = "pypi"
 
 [packages]
 flask = "*"
+python-dotenv = "*"
+flask-login = "*"
+flask-pymongo = "*"
+passlib = "*"
+requests = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"

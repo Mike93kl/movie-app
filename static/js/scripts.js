@@ -10,7 +10,7 @@ $('form[name=signup_form]').submit(function(e) {
         dataType: "json",
         success: function(response) {
             alert('You may now login!')
-            window.location.href = '/auth'
+            window.location.href = '/auth/login'
         },
         error: function(response) {
             const message = response.responseJSON.message;
