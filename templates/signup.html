@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="card-wrapper">
+        <div class="card">
+            
+            <h1 class="center">Create an account</h1>
+
+            <form name="signup_form">
+
+                <label for="fname">Name</label>
+                <input type="text" id="fname" name="fname" class="field" required>
+
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" name="lname" class="field" required>
+
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="field" required>
+
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="field" required>
+
+                <p class="error error--hidden"></p>
+
+                <input type="submit" value="Sign up" class="btn">
+
+            </form>
+            <small>Already have an account? Login <a href="/auth">here</a></small>
+        </div>
+    </div>
+
+{% endblock %}
