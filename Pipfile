@@ -10,8 +10,9 @@ flask-login = "*"
 flask-pymongo = "*"
 passlib = "*"
 requests = "*"
+"pymongo[srv]" = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.6"

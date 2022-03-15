@@ -10,5 +10,4 @@ def init_managers(app):
 
     @login_manager.user_loader
     def load_user(id):
-        print('getting iser ...' + id)
         return User.find_by_id(id)
