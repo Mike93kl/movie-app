@@ -24,6 +24,11 @@ class BaseModel():
         if(isinstance(self._id, ObjectId)):
             self._id = str(self._id)
 
+    def delete(self):
+        if (not hasattr(self, '_id')) or (self._id is None):
+            return
+        self.delete_one(self._id)
+
     @classmethod
     def get_col(cls):
         if cls.collection is None:
@@ -67,3 +72,10 @@ class BaseModel():
     @classmethod
     def delete_one(cls, query_dict):
         db[cls.get_col()].delete_one(query_dict)
+
+    @classmethod
+    def find_many(cls, query_dict, serialze = False):
+        models = db[cls.get_col()].find(query_dict)
+        if serialze:
+            models = [cls(**i) for i in models]
+        return models

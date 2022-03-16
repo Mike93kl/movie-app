@@ -20,56 +20,31 @@ def dashboard():
     
     now_playing = api.get_now_playing(now_playing_page)
     top_rated = api.get_top_rated(top_rated_page)
-    # get users favorites
-    print(len(now_playing['results']))
+
+    favorites = FavMovie.find_many({'user_id': current_user._id}, True)
+    fav_movie_ids = [f.movie_id for f in favorites]
+
     return render_template('movies.html', 
         now_playing=now_playing, top_rated=top_rated, username=current_user.username,
         top_rated_page=int(top_rated_page),
-        now_playing_page=int(now_playing_page))
+        now_playing_page=int(now_playing_page,
+        favorite_ids=fav_movie_ids))
 
-@movies_bp.get('/dashboard/movie/<mid>')
-@login_required
-def get_single_movie(mid):
-    mid = int(mid)
-    movie = api.get_by_id(str(mid));
-    if ('success' in movie) and (movie['success'] == False):
-        return render_template('404.html', message='Movie not found')
-    
-    add_to_fav = request.args.get('addToFavorite') or None
-    print(type(add_to_fav))
-    if add_to_fav == '1':
-        print('in here')
-        fav = FavMovie.find_one({
-        'user_id': current_user._id,
-        'movie_id': mid
-        })
-        print
-        if fav is None:
-            FavMovie(movie_id=movie['id'], user_id=current_user._id, title=movie['original_title']).save()
-    elif add_to_fav == '0':
-        favorite = FavMovie.find_one({
-            'user_id': current_user._id,
-            'movie_id': mid
-        })
-        if favorite is not None:
-            FavMovie.delete_one({'_id': ObjectId(favorite._id)})
-       
-
-    favorite = FavMovie.find_one({
-        'user_id': current_user._id,
-        'movie_id': mid
-    })
-    print(favorite is None)
-    return render_template('single_movie.html', movie=movie, favorite=favorite.dict())
 
 @movies_bp.post('/add-fav')
 @login_required
 def add_to_fav():
+    remove = request.args.get('remove') or None
     user_id = current_user._id
-    movie_id = request.get_json()['movie_id'] or None
-    if movie_id is None:
+    data = request.json
+    if not 'movie_id' in data:
         return jsonify({'message': 'Movie id is required'}), 400
+    movie_id = data['movie_id'] or None
+    movie_id = int(movie_id)  
     movie = api.get_by_id(movie_id)
-    movie_id = movie['movie_id']
-    FavMovie(movie_id=movie_id, user_id=user_id, title=movie['original_title']).save()
+    fav = FavMovie.find_one({'movie_id': movie_id, 'user_id': current_user._id})
+    if (fav is not None) and (remove == 1):
+        fav.delete()
+    elif fav is None:
+        FavMovie(movie_id=movie_id, user_id=user_id, title=movie['original_title'], overview=movie['overview']).save()
     return jsonify({}), 204

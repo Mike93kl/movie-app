@@ -34,12 +34,14 @@
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="top-rated" role="tabpanel" aria-labelledby="nav-home-tab">
         
-        <div class="nav-link-btn" style="padding: 30px">
-         
-          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page - 1 }}&topRatedPage={{ top_rated_page }}">previous</a>
-         
-          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page +1  }}&topRatedPage={{ top_rated_page }}">next</a>
-          
+        <div class="nav-link-btn">
+        
+          {% if (now_playing_page > 1) %}  
+          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page - 1 }}&topRatedPage={{ top_rated_page }}">< previous</a>
+          {% endif %}
+          {% if (now_playing_page < 1000 ) %} 
+          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page +1  }}&topRatedPage={{ top_rated_page }}">next > </a>
+          {% endif %}
          
         </div>
         
@@ -47,7 +49,7 @@
           {% for p in now_playing['results'] %}
           <div class="movie-card" data-mid="{{ p['id'] }}" data-toggle="tooltip" data-placement="bottom"
           title="{{ p['overview'] }}"
-          style="cursor: pointer; background: url('http://image.tmdb.org/t/p/w500{{ p["poster_path"]}}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+          style="cursor: pointer; background-image: url('http://image.tmdb.org/t/p/w500{{ p["poster_path"]}}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
      
            <div class="movie-details">
              <div class="movie-title text-center">
@@ -63,18 +65,30 @@
          </div>
           {% endfor %}
          </div>
-
+         <div class="nav-link-btn">
+        
+            {% if (now_playing_page > 1) %}  
+            <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page - 1 }}&topRatedPage={{ top_rated_page }}">< previous</a>
+            {% endif %}
+            {% if (now_playing_page < 1000 ) %} 
+            <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page +1  }}&topRatedPage={{ top_rated_page }}">next > </a>
+            {% endif %}
+           
+          </div>
       </div>
+
+      
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
 
 
-        <div class="nav-link-btn" style="padding: 30px">
-         
-          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page }}&topRatedPage={{ top_rated_page -1 }}">previous</a>
-         
-          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page  }}&topRatedPage={{ top_rated_page + 1 }}">next</a>
-          
+        <div class="nav-link-btn">
+            {% if (top_rated_page > 1) %}  
+          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page }}&topRatedPage={{ top_rated_page -1 }}">< previous</a>
+            {% endif %}
+            {% if (top_rated_page < 1000 ) %} 
+          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page  }}&topRatedPage={{ top_rated_page + 1 }}">next ></a>
+            {% endif %}
          
         </div>
         
@@ -82,7 +96,7 @@
           {% for p in top_rated['results'] %}
           <div class="movie-card" data-mid="{{ p['id'] }}" data-toggle="tooltip" data-placement="bottom"
           title="{{ p['overview'] }}"
-          style="cursor: pointer; background: url('http://image.tmdb.org/t/p/w500{{ p["poster_path"]}}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+          style="cursor: pointer; background-image: url('http://image.tmdb.org/t/p/w500{{ p["poster_path"]}}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
      
            <div class="movie-details">
              <div class="movie-title text-center">
@@ -96,7 +110,15 @@
           {% endfor %}
          </div>
 
-
+         <div class="nav-link-btn">
+            {% if (top_rated_page > 1) %}  
+          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page }}&topRatedPage={{ top_rated_page -1 }}">< previous</a>
+            {% endif %}
+            {% if (top_rated_page < 1000 ) %} 
+          <a href="/movies/dashboard/?nowPlayingPage={{ now_playing_page  }}&topRatedPage={{ top_rated_page + 1 }}">next ></a>
+            {% endif %}
+         
+        </div>
 
       </div>
      

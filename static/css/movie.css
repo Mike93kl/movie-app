@@ -4,7 +4,7 @@
     grid-template-columns: 3fr 3fr 3fr;
     align-items: center;
     gap: 40px;
-    padding: 30px 40px;
+    padding: 50px;
   }
 
   .movie-card {
@@ -65,14 +65,16 @@
   }
 
   .nav-link-btn {
-      width: 100%;
+      width: 80%;
       height: 100px;
       display: flex;
       direction: column;
-      gap: 40px;
+      gap: 15px;
       align-items: flex-end;
       justify-content: flex-end;
       color: #fff;
+      margin: 30px;
+      padding: 20px;
   }
 
   .fav-button  {
