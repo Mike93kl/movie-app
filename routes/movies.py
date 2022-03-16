@@ -27,8 +27,8 @@ def dashboard():
     return render_template('movies.html', 
         now_playing=now_playing, top_rated=top_rated, username=current_user.username,
         top_rated_page=int(top_rated_page),
-        now_playing_page=int(now_playing_page,
-        favorite_ids=fav_movie_ids))
+        now_playing_page=int(now_playing_page),
+        favorite_ids=fav_movie_ids)
 
 
 @movies_bp.post('/add-fav')

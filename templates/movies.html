@@ -55,13 +55,16 @@
              <div class="movie-title text-center">
               <p> {{ p['original_title'] }}</p>
              </div>
-            
-            
-             
-
            </div>
 
-         
+           {% if p['id'] in favorite_ids %}
+            <button class="fav-button fav" data-remove="1" data-mid="{{ p['id'] }}"> FAVORITE </button>
+           {% endif %}
+
+           {% if p['id'] not in favorite_ids %}
+            <button class="fav-button" data-remove="0" data-mid="{{ p['id'] }}"> ADD FAVORITE </button>
+           {% endif %}
+
          </div>
           {% endfor %}
          </div>

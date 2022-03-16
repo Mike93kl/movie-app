@@ -24,22 +24,33 @@ $('form[name=signup_form]').submit(function(e) {
 })
 
 
-$('.movie-card').on('click', function() {
-    let datamid = $(this).data('mid');
-    console.log(datamid)
+$('.fav-button').on('click', function() {
+    let elem = $(this)
+    let datamid = elem.data('mid');
+    let remove = elem.data('remove')
     $.ajax({
-        url: '/movies/add-fav',
+        url: '/movies/add-fav?remove='+remove,
         method: 'post',
         headers: {
             'Content-Type': 'application/json;utf-8'
         },
         data: JSON.stringify({movie_id: datamid}),
         success: function(response) {
-            $(`#fav-${datamid}`).text('FAVORITE')
-            alert('Added to favorites')
+            let msg = ''
+            if(remove == 1) {
+                elem.text('ADD FAVORITE')
+                elem.removeClass('fav')
+                msg = 'Removed from favorites';
+            } else {
+                elem.text('FAVORITE')
+                elem.addClass('fav')
+                msg = 'Added to favorites';
+            }
+            
+            alert(msg)
         },
         error: function(e) {
-            console.log(e)
+            alert('Oops, something went wrong');
         }
         
     })
