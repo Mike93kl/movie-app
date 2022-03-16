@@ -160,3 +160,13 @@
 .is {
     color: blue;
 }
+
+.logout-ra {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: 80px;
+    padding: 20px;
+    background: black;
+}

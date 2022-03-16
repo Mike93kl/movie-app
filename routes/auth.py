@@ -20,9 +20,11 @@ def user_login():
     if (username is None) or (password is None):
         return jsonify({'message': 'Username and password are mandatory!'}), 400
     
-    user = User.find_one_or_404({'username': username})
+    user = User.find_one({'username': username})
+    if user is None:
+        return render_template('login.html', message="Credentials error")
     if not pbkdf2_sha256.verify(password, user.password):
-        return jsonify({'message': 'Authentication error'}), 400
+        return render_template('login.html', message="Credentials error")
     login_user(user, remember=True)
     return redirect('/movies/dashboard')
     

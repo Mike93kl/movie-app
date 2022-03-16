@@ -16,7 +16,12 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" class="field" required>
 
-                <p class="error error--hidden"></p>
+                {% if message is defined %}
+                <p class="error">
+                    {{ message }}
+                </p>
+                {% endif %}
+                
 
                 <input type="submit" value="Log in" class="btn">
 

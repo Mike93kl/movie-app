@@ -51,6 +51,7 @@ $('#add-cs').on('click', function() {
                         <p class="user-cs">${response.comment}</p>
                 </div>`
                 $('.comment-list').first().append(div)
+                $('#new-comment').val('')
             }
         },
         error: function(e) {
