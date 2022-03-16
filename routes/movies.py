@@ -8,6 +8,7 @@ from db.models.user import User
 import util.movie_api as api
 from flask_login import login_required, current_user
 from db.models.fav_movie import FavMovie
+from db.models.mov_comment import MovComment
 
 movies_bp = Blueprint('movies', __name__, template_folder='templates')
 
@@ -30,6 +31,16 @@ def dashboard():
         now_playing_page=int(now_playing_page),
         favorite_ids=fav_movie_ids)
 
+@movies_bp.get('/<mid>')
+@login_required
+def show_one(mid):
+    mid = int(mid)
+    movie = api.get_by_id(mid)
+    favorite = FavMovie.find_one({'user_id': current_user._id, 'movie_id': mid})
+    is_favorite = favorite is not None
+    comments = MovComment.find_many({'movie_id': int(movie['id'])}, True)
+    return render_template('single_movie.html', movie=movie, is_favorite=is_favorite, comments=comments, username=current_user.username)
+
 
 @movies_bp.post('/add-fav')
 @login_required
@@ -42,9 +53,25 @@ def add_to_fav():
     movie_id = data['movie_id'] or None
     movie_id = int(movie_id)  
     movie = api.get_by_id(movie_id)
+    if ('success' in movie) and (movie['success'] == False):
+        return jsonify({'message': 'Movie not found'}), 404
+
     fav = FavMovie.find_one({'movie_id': movie_id, 'user_id': current_user._id})
     if (fav is not None) and (remove == 1):
         fav.delete()
     elif fav is None:
         FavMovie(movie_id=movie_id, user_id=user_id, title=movie['original_title'], overview=movie['overview']).save()
     return jsonify({}), 204
+
+
+@movies_bp.post('/add-comment')
+@login_required
+def add_comment():
+    data = request.json
+    if (data['movie_id'] is None) or (data['comment'] is None):
+        return jsonify({'message': 'Movie and comment are required'}), 400
+    movie = api.get_by_id(data['movie_id'])
+    if ('success' in movie) and (movie['success'] == False):
+        return jsonify({'message': 'Movie not found'}), 404
+    comment = MovComment(current_user._id, movie['id'], current_user.username, data['comment']).save()
+    return jsonify(comment.dict()), 200

@@ -47,7 +47,7 @@
         
         <div class="movie-list-wrapper">
           {% for p in now_playing['results'] %}
-          <div class="movie-card" data-mid="{{ p['id'] }}" data-toggle="tooltip" data-placement="bottom"
+          <div class="movie-card nav-to-movie" data-mid="{{ p['id'] }}" data-toggle="tooltip" data-placement="bottom"
           title="{{ p['overview'] }}"
           style="cursor: pointer; background-image: url('http://image.tmdb.org/t/p/w500{{ p["poster_path"]}}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
      
@@ -97,7 +97,7 @@
         
         <div class="movie-list-wrapper">
           {% for p in top_rated['results'] %}
-          <div class="movie-card" data-mid="{{ p['id'] }}" data-toggle="tooltip" data-placement="bottom"
+          <div class="movie-card nav-to-movie" data-mid="{{ p['id'] }}" data-toggle="tooltip" data-placement="bottom"
           title="{{ p['overview'] }}"
           style="cursor: pointer; background-image: url('http://image.tmdb.org/t/p/w500{{ p["poster_path"]}}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
      

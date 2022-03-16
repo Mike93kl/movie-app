@@ -24,6 +24,42 @@ $('form[name=signup_form]').submit(function(e) {
 })
 
 
+$('.nav-to-movie').on('click', function() {
+    let mid = $(this).data('mid');
+    if(mid) {
+        window.location.href = '/movies/' + mid
+    }
+})
+
+$('#add-cs').on('click', function() {
+    let mid = $(this).data('mid');
+    let comment = $('#new-comment').val();
+    $.ajax({
+        url: '/movies/add-comment',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;utf-8'
+        },
+        data: JSON.stringify({movie_id: mid, comment}),
+        success: function(response) {
+            if(response.user_id) {
+                let user = $('#username').val()
+                
+                let div = `
+                 <div class="comment">
+                        <p class="user ${user == response.username ? 'is' : ''}">${response.username}</p>
+                        <p class="user-cs">${response.comment}</p>
+                </div>`
+                $('.comment-list').first().append(div)
+            }
+        },
+        error: function(e) {
+            alert(e.message ? e.message : 'Oops, something went wrong');
+        }
+        
+    })
+})
+
 $('.fav-button').on('click', function() {
     let elem = $(this)
     let datamid = elem.data('mid');

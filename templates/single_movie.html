@@ -17,14 +17,53 @@
         body {
             margin: 0;
             padding: 0;
-            ;
+            background: black;
         }
     </style>
 
+    <input type="hidden" id="username" value="{{ username }}">
+    <div class="movie-wrapper ">
 
-    {{ movie['id']  }}    
-{{ movie['original_title'] }}
-   {{ favorite['_id'] }}
+        <div class="container text-center">
+             <img src="http://image.tmdb.org/t/p/w500{{ movie["poster_path"]}}" alt="" class="img">
+             {% if is_favorite %}
+                <button style="width: 60%" class="fav-button fav" data-remove="1" data-mid="{{ movie['id'] }}"> FAVORITE </button>
+                {% endif %}
+ 
+                {% if not is_favorite %}
+                <button style="width: 60%" class="fav-button" data-remove="0" data-mid="{{ movie['id'] }}"> ADD FAVORITE </button>
+                {% endif %}
+             <h4 class="mt-5"> {{ movie['original_title'] }} </h4>
+
+             <p class="mt-2">{{ movie['overview'] }}</p>
+
+             <h4 class="text-left text-secondary" >Comments</h4>
+
+             <div class="comment-area">
+                <textarea id="new-comment" class="form-control"></textarea>
+                <button id="add-cs" data-mid="{{ movie['id'] }}" class="btn btn-primary">add</button>
+             </div>
+
+             <div class="comment-list mt-5">
+                 {% for c in comments %}
+                    <div class="comment">
+                        {% if username == c['username'] %}
+                        <p class="user is">{{ c['username'] }}</p>
+                        {% endif %}
+                        {% if username != c['username'] %}
+                        <p class="user">{{ c['username'] }}</p>
+                        {% endif %}
+                        <p class="user-cs">{{ c['comment'] }}</p>
+                    </div>
+                 {% endfor %}
+             </div>
+
+        </div>
+        
+        
+
+
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"

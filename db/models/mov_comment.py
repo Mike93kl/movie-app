@@ -4,7 +4,9 @@ class MovComment(BaseModel):
 
     collection = 'mov_comments'
 
-    def __ini__(self, user_id, mov_id, comment):
+    def __init__(self, user_id, movie_id, username, comment, _id = None):
+        super().__init__(_id)
         self.user_id=user_id
-        self.movie_id=mov_id
+        self.username = username
+        self.movie_id=movie_id
         self.comment=comment

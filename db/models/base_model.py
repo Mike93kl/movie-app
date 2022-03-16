@@ -18,6 +18,7 @@ class BaseModel():
             delattr(self, '_id')
         saved = db[self.get_col()].insert_one(self.dict())
         self._id = saved.inserted_id
+        self.serialize_id()
         return self
 
     def serialize_id(self):
