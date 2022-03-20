@@ -1,8 +1,25 @@
+$(document).ready(function() {
+    const tab = localStorage.getItem('ctab') || null;
+    if(tab) {
+        $(tab).click();
+    }
+});
+
+
+$('.nav-item').on('click', function() {
+    const id = $(this).attr('id') || null;
+    localStorage.setItem('ctab', '#'+id)
+});
+
 $('form[name=signup_form]').submit(function(e) {
     e.preventDefault();
     const form = $(this)
-    const data = form.serialize();
+    let data = form.serialize();
     const error = $('.error');
+
+    const isAdmin = confirm('Click OK to create user as ADMIN or cancel for plain USER');
+    data+='&is_admin='+isAdmin;
+    console.log(data);
     $.ajax({
         url: '/auth/signup',
         type: 'POST',
@@ -24,7 +41,7 @@ $('form[name=signup_form]').submit(function(e) {
 })
 
 
-$('.nav-to-movie').on('click', function() {
+$('.nav-to-movie').on('click', function(e) {
     let mid = $(this).data('mid');
     if(mid) {
         window.location.href = '/movies/' + mid
@@ -55,7 +72,7 @@ $('#add-cs').on('click', function() {
             }
         },
         error: function(e) {
-            alert(e.message ? e.message : 'Oops, something went wrong');
+            alert(e.responseJSON && e.responseJSON.message ? e.responseJSON.message: 'Oops, something went wrong');
         }
         
     })
@@ -87,7 +104,7 @@ $('.fav-button').on('click', function() {
             alert(msg)
         },
         error: function(e) {
-            alert('Oops, something went wrong');
+            alert(e.responseJSON && e.responseJSON.message ? e.responseJSON.message:'Oops, something went wrong');
         }
         
     })

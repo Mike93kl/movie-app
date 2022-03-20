@@ -38,12 +38,17 @@
              <p class="mt-2">{{ movie['overview'] }}</p>
 
              <h4 class="text-left text-secondary" >Comments</h4>
-
-             <div class="comment-area">
+            {% if allow_comment %}
+            <div class="comment-area">
                 <textarea id="new-comment" class="form-control"></textarea>
                 <button id="add-cs" data-mid="{{ movie['id'] }}" class="btn btn-primary">add</button>
              </div>
-
+             {% endif %}
+             {% if not allow_comment %}
+             <div class="comment-area">
+                    <p class="text-danger">Only admins may comment</p>
+              </div>
+              {% endif %}
              <div class="comment-list mt-5">
                  {% for c in comments %}
                     <div class="comment">

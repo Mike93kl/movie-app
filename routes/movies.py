@@ -9,6 +9,8 @@ import util.movie_api as api
 from flask_login import login_required, current_user
 from db.models.fav_movie import FavMovie
 from db.models.mov_comment import MovComment
+from util.decorators import role_auth
+from db.models.roles_enum import UserRolesEnum
 
 movies_bp = Blueprint('movies', __name__, template_folder='templates')
 
@@ -39,11 +41,14 @@ def show_one(mid):
     favorite = FavMovie.find_one({'user_id': current_user._id, 'movie_id': mid})
     is_favorite = favorite is not None
     comments = MovComment.find_many({'movie_id': int(movie['id'])}, True)
-    return render_template('single_movie.html', movie=movie, is_favorite=is_favorite, comments=comments, username=current_user.username)
+    allow_comment = current_user.role in [UserRolesEnum.ADMIN]
+    return render_template('single_movie.html', movie=movie, is_favorite=is_favorite, comments=comments, 
+        username=current_user.username, allow_comment=allow_comment)
 
 
 @movies_bp.post('/add-fav')
 @login_required
+@role_auth(roles=[UserRolesEnum.ADMIN, UserRolesEnum.USER])
 def add_to_fav():
     remove = request.args.get('remove') or None
     user_id = current_user._id
@@ -66,6 +71,7 @@ def add_to_fav():
 
 @movies_bp.post('/add-comment')
 @login_required
+@role_auth(roles=[UserRolesEnum.ADMIN])
 def add_comment():
     data = request.json
     if (data['movie_id'] is None) or (data['comment'] is None):

@@ -1,3 +1,4 @@
+from db.models.roles_enum import UserRolesEnum
 from flask import g, Blueprint, render_template, request, jsonify, Response, redirect, url_for
 from db import db
 import json
@@ -39,7 +40,9 @@ def post_signup():
     lname = request.form.get('lname')
     username = request.form.get('username')
     password = request.form.get('password')
-    print(fname, lname, username, password)
+    is_admin = request.form.get('is_admin');
+    role = UserRolesEnum.USER if (is_admin == None) or (is_admin == 'false') else UserRolesEnum.ADMIN
+    print(fname, lname, username, password, is_admin, role)
     if (fname is None) or (lname is None) or (username is None) \
         or (password is None):
         return jsonify({'message': 'All fields are required'}), 400
@@ -49,7 +52,7 @@ def post_signup():
     if user is not None:
         return jsonify({'message': 'Username already taken!'}), 400
     user = User(fname=fname, lname=lname, 
-        username=username, password=pbkdf2_sha256.hash(password)).save()
+        username=username, password=pbkdf2_sha256.hash(password), role=role).save()
     return jsonify({}), 204
 
 @auth_bp.route('/logout')
